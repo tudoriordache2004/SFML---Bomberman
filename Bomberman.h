@@ -6,6 +6,8 @@
 #include <SFML/Graphics.hpp>
 
 #include <iostream>
+
+enum BOMBERMAN_ANIMATION_STATES { IDLE = 0, MOVING_LEFT, MOVING_RIGHT, MOVING_UP, MOVING_DOWN };
 class Bomberman
 {
 private:
@@ -13,11 +15,17 @@ private:
 	sf::Texture texture;
 
 	float MovementSpeed;
+	sf::Clock animationTimer;
+
+	//Animation
+	int animationState;
+	sf::IntRect currentFrame;
 
 	//private functions
 	void InitializeVariables();
 	void InitializeTexture();
 	void InitializeSprite();
+	void InitializeAnimation();
 public:
 	//Constructor
 	Bomberman();
@@ -32,8 +40,9 @@ public:
 	//Move the player
 	void Move(const float dir_x, const float dir_y);
 
-	void Update();
+	void UpdateAnimation();
 	void UpdateMovement();
+	void Update();
 	void Render(sf::RenderTarget* target);
 
 };
