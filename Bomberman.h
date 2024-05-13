@@ -32,8 +32,9 @@ public:
 	//Move the player
 	void Move(const float dir_x, const float dir_y);
 
-	void update();
-	void render(sf::RenderTarget* target);
+	void Update();
+	void UpdateMovement();
+	void Render(sf::RenderTarget* target);
 
 };
 

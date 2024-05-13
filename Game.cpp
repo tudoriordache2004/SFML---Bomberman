@@ -47,7 +47,7 @@ void Game::Render()
 
 	this->RenderWorld();
 
-	this->bomberman->render(this->window);
+	this->bomberman->Render(this->window);
 
 	this->window->display();
 
@@ -108,7 +108,7 @@ void Game::RenderWorld()
 
 void Game::UpdatePlayer()
 {
-	this->bomberman->update();
+	this->bomberman->Update();
 }
 
 //public functions
