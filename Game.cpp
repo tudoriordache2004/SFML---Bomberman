@@ -7,17 +7,37 @@ void Game::InitializeWindow()
 	this->window->setFramerateLimit(144);
 }
 
+//void Game::InitializeMusic()
+//{
+//	if (!this->music.openFromFile("music_sounds/riot.wav"))
+//	{
+//		std::cout<<"Game::InitializeMusic::Can't play riot.wav";
+//	}
+//	else
+//music.play();
+//}
+
+void Game::InitializePlayer()
+{
+	this->bomberman = new Bomberman();
+}
+
 //game constructor
 Game::Game()
 {
 	this->InitializeWindow();
 
-}
+	//this->InitializeMusic();
 
+	this->InitializePlayer();
+
+}
 
 //game destructor
 Game::~Game()
 {
+	delete this->bomberman;
+
 	delete this->window;
 }
 
@@ -27,9 +47,12 @@ void Game::Render()
 
 	this->RenderWorld();
 
+	this->bomberman->render(this->window);
+
 	this->window->display();
 
 }
+
 
 void Game::RenderWorld()
 {
@@ -83,9 +106,14 @@ void Game::RenderWorld()
 		}
 }
 
+void Game::UpdatePlayer()
+{
+	this->bomberman->update();
+}
+
 //public functions
 
-void Game::UpdatePollEvents()
+void Game::Update()
 {
 	sf::Event event;
 	while (this->window->pollEvent(event))
@@ -95,13 +123,15 @@ void Game::UpdatePollEvents()
 		if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::Escape)
 			this->window->close();
 	}
+
+	this->UpdatePlayer();
 }
 
 void Game::Run()
 {
 	while (this->window->isOpen())
 	{
-		this->UpdatePollEvents();
+		this->Update();
 
 		this->Render();
 	}
