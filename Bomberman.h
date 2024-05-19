@@ -1,9 +1,9 @@
 #pragma once
 #include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
-#include <SFML/Network.hpp>
-#include <SFML/Graphics.hpp>
 
 #include <iostream>
 
@@ -16,6 +16,7 @@ private:
 
 	float MovementSpeed;
 	sf::Clock animationTimer;
+	bool moving;
 
 	//Animation
 	int animationState;

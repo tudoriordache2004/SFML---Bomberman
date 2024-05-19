@@ -1,25 +1,25 @@
 #ifndef GAME_H
 #define GAME_H
+#include <iostream>
+#include <vector>
+
 #include <SFML/Audio.hpp>
 #include <SFML/Audio/Music.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
-#include <SFML/Network.hpp>
-#include <SFML/Graphics.hpp>
-#include <iostream>
 
 #include "Bomberman.h"
 class Game
 {
 private:
 	sf::RenderWindow* window;
-	
-	//world
-	sf::Texture backgroundtexture;
-	sf::Sprite background;
 
+	//world
+	std::vector<std::pair<float, float> > walltextures;
 	//music
-	//sf::Music music;
+	sf::Music music;
 
 	//bomberman
 	Bomberman* bomberman;
@@ -38,9 +38,10 @@ public:
 
 	void Update();
 	void UpdatePlayer();
+	void UpdateCollision();
 
 	void RenderWorld(); //render the world
 	void Render(); //rendering
-	
+
 };
 #endif

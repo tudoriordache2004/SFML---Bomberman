@@ -3,19 +3,21 @@
 //private functions
 void Game::InitializeWindow()
 {
-	this->window = new sf::RenderWindow(sf::VideoMode(689, 795), "Bomberman", sf::Style::Default);
-	this->window->setFramerateLimit(144);
+	this->window = new sf::RenderWindow(sf::VideoMode(689, 795), "Bomberman", sf::Style::Close | sf::Style::Titlebar);
+	this->window->setFramerateLimit(60);
+	this->window->setKeyRepeatEnabled(false);
 }
 
-//void Game::InitializeMusic()
-//{
-//	if (!this->music.openFromFile("music_sounds/riot.wav"))
-//	{
-//		std::cout<<"Game::InitializeMusic::Can't play riot.wav";
-//	}
-//	else
-//music.play();
-//}
+void Game::InitializeMusic()
+{
+	if (!this->music.openFromFile("music_sounds/riot.wav"))
+	{
+		std::cout << "Game::InitializeMusic::Can't play riot.wav";
+	}
+	else
+		this->music.play();
+	this->music.setLoop(true);
+}
 
 void Game::InitializePlayer()
 {
@@ -27,7 +29,7 @@ Game::Game()
 {
 	this->InitializeWindow();
 
-	//this->InitializeMusic();
+	this->InitializeMusic();
 
 	this->InitializePlayer();
 
@@ -104,11 +106,13 @@ void Game::RenderWorld()
 				break;
 			}
 		}
+	std::cout << GrassSprite.getPosition().x << " " << GrassSprite.getPosition().y << std::endl;
 }
 
 void Game::UpdatePlayer()
 {
 	this->bomberman->Update();
+	this->UpdateCollision();
 }
 
 //public functions
@@ -125,6 +129,23 @@ void Game::Update()
 	}
 
 	this->UpdatePlayer();
+}
+
+void Game::UpdateCollision()
+{
+	//left collision
+	if (this->bomberman->GetPosition().x < 53.f)
+			this->bomberman->SetPosition(53.f, this->bomberman->GetPosition().y);
+	//right collision
+	if (this->bomberman->GetPosition().x+this->bomberman->GetBounds().width > this->window->getSize().x - 53.f)
+		this->bomberman->SetPosition(this->window->getSize().x - 53.f - this->bomberman->GetBounds().width, this->bomberman->GetPosition().y);
+	//bottom collision
+	if (this->bomberman->GetPosition().y+ this->bomberman->GetBounds().height > this->window->getSize().y - 53.f)
+		this->bomberman->SetPosition(this->bomberman->GetPosition().x, this->window->getSize().y - 53.f - this->bomberman->GetBounds().height);
+	//top collision
+	if (this->bomberman->GetPosition().y < 53.f)
+		this->bomberman->SetPosition(this->bomberman->GetPosition().x, 53.f);
+		
 }
 
 void Game::Run()
