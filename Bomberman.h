@@ -15,10 +15,13 @@ private:
 	sf::Texture texture;
 
 	float MovementSpeed;
-	sf::Clock animationTimer;
-	bool moving;
+	bool moving_up;
+	bool moving_down;
+	bool moving_left;
+	bool moving_right;
 
 	//Animation
+	sf::Clock animationTimer;
 	int animationState;
 	sf::IntRect currentFrame;
 

@@ -6,7 +6,14 @@ void Bomberman::InitializeVariables()
 
 	this->animationState = BOMBERMAN_ANIMATION_STATES::IDLE;
 
-	this->moving = false;
+	this->moving_up = false;
+
+	this->moving_down = false;
+
+	this->moving_left = false;
+
+	this->moving_right = false;
+
 }
 
 void Bomberman::InitializeTexture()
@@ -138,28 +145,42 @@ void Bomberman::UpdateAnimation()
 
 void Bomberman::UpdateMovement()
 {
-	this->animationState = BOMBERMAN_ANIMATION_STATES::IDLE;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) //left
 	{
-		this->Move(-1.f, 0.f);
 		this->animationState = BOMBERMAN_ANIMATION_STATES::MOVING_LEFT;
+		this->Move(-1.f, 0.f);
+		moving_left = true;
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) //right
 	{
-		this->Move(1.f, 0.f);
 		this->animationState = BOMBERMAN_ANIMATION_STATES::MOVING_RIGHT;
+		this->Move(1.f, 0.f);
+		moving_right = true;
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) //top
 	{
-		this->Move(0.f, -1.f);
 		this->animationState = BOMBERMAN_ANIMATION_STATES::MOVING_UP;
+		this->Move(0.f, -1.f);
+		moving_up = true;
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) //down
 	{
-		this->Move(0.f, 1.f);
 		this->animationState = BOMBERMAN_ANIMATION_STATES::MOVING_DOWN;
+		this->Move(0.f, 1.f);
+		moving_down = true;
 	}
+	if(!moving_up && !moving_down && !moving_left &&!moving_right)
+	{
+		this->animationState = BOMBERMAN_ANIMATION_STATES::IDLE;
+	}
+	this->moving_up = false;
+
+	this->moving_down = false;
+
+	this->moving_left = false;
+
+	this->moving_right = false;
 }
 
 void Bomberman::Render(sf::RenderTarget* target)

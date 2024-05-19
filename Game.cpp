@@ -24,6 +24,11 @@ void Game::InitializePlayer()
 	this->bomberman = new Bomberman();
 }
 
+void Game::InitializeEnemy()
+{
+	this->enemy = new Enemy();
+}
+
 //game constructor
 Game::Game()
 {
@@ -32,13 +37,16 @@ Game::Game()
 	this->InitializeMusic();
 
 	this->InitializePlayer();
-
+	
+	this->InitializeEnemy();
 }
 
 //game destructor
 Game::~Game()
 {
 	delete this->bomberman;
+
+	delete this->enemy;
 
 	delete this->window;
 }
@@ -50,6 +58,8 @@ void Game::Render()
 	this->RenderWorld();
 
 	this->bomberman->Render(this->window);
+
+	this->enemy->Render(this->window);
 
 	this->window->display();
 
@@ -103,10 +113,13 @@ void Game::RenderWorld()
 			case 2:
 				WallSprite.setPosition(x, y);
 				this->window->draw(WallSprite);
+				this->WallSprites.push_back(std::make_pair(x, y));
 				break;
 			}
 		}
-	std::cout << GrassSprite.getPosition().x << " " << GrassSprite.getPosition().y << std::endl;
+	//for (auto& wallsprite : WallSprites)
+	//	std::cout << wallsprite.first << " " << wallsprite.second << "\n";
+
 }
 
 void Game::UpdatePlayer()
@@ -137,15 +150,14 @@ void Game::UpdateCollision()
 	if (this->bomberman->GetPosition().x < 53.f)
 			this->bomberman->SetPosition(53.f, this->bomberman->GetPosition().y);
 	//right collision
-	if (this->bomberman->GetPosition().x+this->bomberman->GetBounds().width > this->window->getSize().x - 53.f)
+	else if (this->bomberman->GetPosition().x+this->bomberman->GetBounds().width > this->window->getSize().x - 53.f)
 		this->bomberman->SetPosition(this->window->getSize().x - 53.f - this->bomberman->GetBounds().width, this->bomberman->GetPosition().y);
 	//bottom collision
 	if (this->bomberman->GetPosition().y+ this->bomberman->GetBounds().height > this->window->getSize().y - 53.f)
 		this->bomberman->SetPosition(this->bomberman->GetPosition().x, this->window->getSize().y - 53.f - this->bomberman->GetBounds().height);
 	//top collision
-	if (this->bomberman->GetPosition().y < 53.f)
+	else if (this->bomberman->GetPosition().y < 53.f)
 		this->bomberman->SetPosition(this->bomberman->GetPosition().x, 53.f);
-		
 }
 
 void Game::Run()
